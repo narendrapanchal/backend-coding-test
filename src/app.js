@@ -94,8 +94,8 @@ module.exports = (db) => {
             });
           }
           const offset = (page - 1) * limit;
-          const query = `SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`;
-          const rows = await queryAsync(db,query);
+          const query = `SELECT * FROM Rides LIMIT ? OFFSET ?`;
+          const rows = await queryAsync(db,query,[limit,offset]);
           if (rows.length === 0) {
             return res.send({
               error_code: "RIDES_NOT_FOUND_ERROR",
@@ -112,7 +112,7 @@ module.exports = (db) => {
 
     app.get('/rides/:id', async(req, res) => {
         try{ 
-            const rows = await queryAsync(db,`SELECT * FROM Rides WHERE rideID = ${req.params.id}`,[]);
+            const rows = await queryAsync(db,`SELECT * FROM Rides WHERE rideID = ?`,[req.params.id]);
               if (rows.length === 0) {
                 return res.send({
                   error_code: "RIDES_NOT_FOUND_ERROR",
