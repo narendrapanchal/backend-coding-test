@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-
+const {logger} =require("../helpers/logger")
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
@@ -77,7 +77,11 @@ module.exports = (db) => {
     });
 
     app.get('/rides', (req, res) => {
-        db.all('SELECT * FROM Rides', function (err, rows) {
+        const page = +req.query.page || 1;
+        const limit = +req.query.limit || 10;
+        const offset = (page - 1) * limit;
+
+        db.all(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`, function (err, rows) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
