@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-
+const {logger} =require("../helpers/logger")
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
@@ -77,8 +77,13 @@ module.exports = (db) => {
     });
 
     app.get('/rides', (req, res) => {
-        db.all('SELECT * FROM Rides', function (err, rows) {
+        const page = +req.query.page || 1;
+        const limit = +req.query.limit || 10;
+        const offset = (page - 1) * limit;
+
+        db.all(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`, function (err, rows) {
             if (err) {
+                logger.error('This is an error message', new Error(err));
                 return res.send({
                     error_code: 'SERVER_ERROR',
                     message: 'Unknown error'
@@ -86,6 +91,7 @@ module.exports = (db) => {
             }
 
             if (rows.length === 0) {
+                logger.log({level:"info",message:'Tadsn info message',...{ service: 'service' } });
                 return res.send({
                     error_code: 'RIDES_NOT_FOUND_ERROR',
                     message: 'Could not find any rides'
