@@ -10,6 +10,9 @@
     "test": "mocha tests",
     "start": "node index.js"
   },
+  "pre-push": [
+    "test"
+  ],
   "keywords": [
     "Xendit"
   ],
@@ -17,11 +20,23 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "eslint": "^8.56.0",
     "express": "^4.16.4",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
     "mocha": "^6.1.4",
-    "supertest": "^4.0.2"
-  }
+    "pre-push": "^0.1.4",
+    "supertest": "^4.0.2",
+    "fs": "0.0.1-security",
+    "winston": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/narendrapanchal/backend-coding-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/narendrapanchal/backend-coding-test/issues"
+  },
+  "homepage": "https://github.com/narendrapanchal/backend-coding-test#readme"
 }
